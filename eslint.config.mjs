@@ -19,7 +19,15 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.strict,
-  reactHooks.configs['recommended-latest'],
+  {
+    plugins: {
+      'react-hooks': reactHooks
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    }
+  },
   {
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],

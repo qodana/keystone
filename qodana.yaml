@@ -1,0 +1,20 @@
+version: "1.0"
+
+# Bootstrap command to install dependencies
+bootstrap: pnpm install --filter=!./examples/**
+
+# Use recommended profile with all inspections enabled
+profile:
+  name: qodana.recommended
+
+# Include all inspections
+include:
+  - name: All
+
+# Exclude paths
+exclude:
+  - name: All
+    paths:
+      - examples
+      - tests
+      - tests2
