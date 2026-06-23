@@ -80,6 +80,11 @@ export async function spawnCommand(cwd: string, commands: string[]) {
     p.stderr.on('data', data => (output += data.toString('utf-8')))
     p.on('error', err => reject(err))
     p.on('exit', exitCode => {
+      // Explicitly close streams to prevent Jest from hanging
+      p.stdout?.destroy()
+      p.stderr?.destroy()
+      p.stdin?.destroy()
+
       if (typeof exitCode === 'number' && exitCode !== 0)
         return reject(`${commands.join(' ')} returned ${exitCode}`)
       resolve(output)
@@ -100,7 +105,14 @@ export async function spawnCommand2(cwd: string, commands: string[]) {
     p.stdout.on('data', data => (output += data.toString('utf-8')))
     p.stderr.on('data', data => (output += data.toString('utf-8')))
     p.on('error', err => reject(err))
-    p.on('exit', exitCode => resolve({ exitCode, output }))
+    p.on('exit', exitCode => {
+      // Explicitly close streams to prevent Jest from hanging
+      p.stdout?.destroy()
+      p.stderr?.destroy()
+      p.stdin?.destroy()
+
+      resolve({ exitCode, output })
+    })
   })
 }
 
@@ -199,6 +211,11 @@ export async function introspectDatabase(cwd: string, url: string) {
     p.stderr.on('data', data => (output += data.toString('utf-8')))
     p.on('error', err => reject(err))
     p.on('exit', exitCode => {
+      // Explicitly close streams to prevent Jest from hanging
+      p.stdout?.destroy()
+      p.stderr?.destroy()
+      p.stdin?.destroy()
+
       if (output.includes('P4001')) return resolve('') // empty database
       if (typeof exitCode === 'number' && exitCode !== 0)
         return reject(`Introspect process returned ${exitCode}`)
