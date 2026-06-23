@@ -37,6 +37,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate coverage
+        run: |
+          npx jest --coverage --bail=false --runInBand --testPathIgnorePatterns="tests/api-tests|packages/fields-document|tests/admin-ui-tests|tests/examples-smoke-tests|tests2" || true
+          mkdir -p .qodana/code-coverage
+          cp coverage/lcov.info .qodana/code-coverage/ 2>/dev/null || true
+
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2026.1
         env:

@@ -1,8 +1,5 @@
 version: "1.0"
 
-# Bootstrap command to generate coverage
-bootstrap: (npx jest --coverage --bail=false --runInBand --testPathIgnorePatterns="tests/api-tests|packages/fields-document|tests/admin-ui-tests|tests/examples-smoke-tests|tests2" || true) && mkdir -p .qodana/code-coverage && cp coverage/lcov.info .qodana/code-coverage/ 2>/dev/null || true
-
 # Use recommended profile with all inspections enabled
 profile:
   name: qodana.recommended
