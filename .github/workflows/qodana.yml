@@ -8,6 +8,10 @@ on:
   schedule:
     - cron: '0 0 1 1,7 *'  # Runs on January 1st and July 1st
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   qodana:
     runs-on: ubuntu-latest
@@ -23,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
